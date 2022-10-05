@@ -24,6 +24,10 @@ export default {
     ]
   },
 
+  publicRuntimeConfig: {
+    appName: process.env.APP_NAME
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
