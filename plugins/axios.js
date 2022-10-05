@@ -1,10 +1,12 @@
+// Doc: https://axios.nuxtjs.org/extend/
+// Doc: https://axios.nuxtjs.org/helpers
 export default ({ $axios, $auth, isDev }) => {
   $axios.onRequest((config) => {
     if (isDev) {
-      console.log(response)
+      console.log(config)
     }
   })
-  $axios.onResponse((config) => {
+  $axios.onResponse((response) => {
     if (isDev) {
       console.log(response)
     }
