@@ -50,26 +50,26 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    '@nuxtjs/i18n'
+    '@nuxtjs/axios'
+    // '@nuxtjs/i18n'
   ],
 
-  i18n: {
-    // 対応言語の指定
-    locales: ['ja', 'en'],
-    // デフォルト言語の指定
-    defaultLocale: 'ja',
-    vueI18n: {
-      // 翻訳対象のキーがない場合の言語を指定
-      fallbackLocale: 'ja',
-      // キーが存在しない場合のみ警告
-      silentFallbackWarn: true,
-      messages: {
-        ja: require('./locales/ja.json'),
-        en: require('./locales/en.json')
-      }
-    }
-  },
+  // i18n: {
+  //   // 対応言語の指定
+  //   locales: ['ja', 'en'],
+  //   // デフォルト言語の指定
+  //   defaultLocale: 'ja',
+  //   vueI18n: {
+  //     // 翻訳対象のキーがない場合の言語を指定
+  //     fallbackLocale: 'ja',
+  //     // キーが存在しない場合のみ警告
+  //     silentFallbackWarn: true,
+  //     messages: {
+  //       ja: require('./locales/ja.json'),
+  //       en: require('./locales/en.json')
+  //     }
+  //   }
+  // },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -82,7 +82,7 @@ export default {
   },
 
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/sass/variables.scss'],
     treeShake: true
   }
 }
