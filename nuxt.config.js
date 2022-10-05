@@ -50,6 +50,23 @@ export default {
     '@nuxtjs/i18n'
   ],
 
+  i18n: {
+    // 対応言語の指定
+    locales: ['ja', 'en'],
+    // デフォルト言語の指定
+    defaultLocale: 'ja',
+    vueI18n: {
+      // 翻訳対象のキーがない場合の言語を指定
+      fallbackLocale: 'ja',
+      // キーが存在しない場合のみ警告
+      silentFallbackWarn: true,
+      messages: {
+        ja: require('./locales/ja.json'),
+        en: require('./locales/en.json')
+      }
+    }
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
