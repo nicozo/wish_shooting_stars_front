@@ -2,6 +2,11 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  // Railsアプリのポート番号との重複を避ける
+  server: {
+    port: process.env.FRONT_PORT
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'front',
