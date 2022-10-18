@@ -3,7 +3,7 @@
     <home-header :app-name="appName"/>
 
     <v-main>
-      <v-container>
+      <v-container fill-height>
         <Nuxt />
       </v-container>
     </v-main>
