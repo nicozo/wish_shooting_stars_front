@@ -1,9 +1,7 @@
 <template>
-  <v-app-bar
-    app
-  >
+  <v-app-bar app>
     <v-toolbar-title>
-      星に願いを
+      {{ appName }}
     </v-toolbar-title>
   </v-app-bar>
 </template>
