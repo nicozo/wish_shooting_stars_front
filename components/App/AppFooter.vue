@@ -7,7 +7,7 @@
       >
         <div class="text-center">
           &copy;2022
-          <strong></strong>
+          <strong />
         </div>
       </v-col>
     </v-row>
@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({
-  name: 'AppFooter'
-})
+@Component
+export default class AppFooter extends Vue {
+}
 </script>

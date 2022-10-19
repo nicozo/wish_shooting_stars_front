@@ -13,9 +13,10 @@
       </div>
 
       <v-btn
+        dark
         color="purple"
         nuxt
-        to="/"
+        :to="{ name: 'wish' }"
       >
         お願い事をする
       </v-btn>
@@ -24,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({
-  name: 'IndexPage'
-})
+@Component
+export default class IndexPage extends Vue {
+}
 </script>

@@ -36,7 +36,7 @@ const config: NuxtConfig = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    `plugins/axios.js`
+    'plugins/axios.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -76,7 +76,7 @@ const config: NuxtConfig = {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: process.env.NODE_ENV === "production" ? "https://wish-shooting-stars-api.herokuapp.com/" : process.env.API_URL
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://wish-shooting-stars-api.herokuapp.com/' : process.env.API_URL
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -91,7 +91,7 @@ const config: NuxtConfig = {
   typescript: {
     typeCheck: {
       eslint: {
-        files: './src/**/*.{ts,js,vue}'
+        files: './**/*.{ts,js,vue}'
       }
     }
   }

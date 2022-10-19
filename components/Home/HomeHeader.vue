@@ -9,14 +9,10 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
-export default Vue.extend({
-  name: 'HomeHeader',
-  props: {
-    appName: {
-      type: String
-    }
-  }
-})
+@Component
+export default class HomeHeader extends Vue {
+  @Prop({ type: String }) appName: string
+}
 </script>
