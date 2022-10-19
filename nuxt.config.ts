@@ -86,6 +86,14 @@ const config: NuxtConfig = {
   vuetify: {
     customVariables: ['~/assets/sass/variables.scss'],
     treeShake: true
+  },
+
+  typescript: {
+    typeCheck: {
+      eslint: {
+        files: './src/**/*.{ts,js,vue}'
+      }
+    }
   }
 }
 
