@@ -10,7 +10,7 @@
           願い事を一つ決めよう！
         </v-card-title>
 
-        <form @submit.prevent="decide">
+        <form>
           <v-container>
             <v-text-field
               v-model="wish"
@@ -25,6 +25,7 @@
               block
               color="purple"
               class="py-6"
+              @click="decide"
             >
               決定する
             </v-btn>
@@ -40,5 +41,19 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class WishPage extends Vue {
+  wish = ''
+
+  async decide () {
+    await this.$axios.$post(
+      '/api/v1/wishes',
+      {
+        wish: {
+          title: this.wish
+        }
+      }
+    )
+      .then(res => console.log(res))
+      .catch(e => console.log(e))
+  }
 }
 </script>
