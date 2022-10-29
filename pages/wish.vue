@@ -13,27 +13,39 @@
           願い事を一つ決めよう！
         </v-card-title>
 
-        <form>
-          <v-container>
-            <v-text-field
-              v-model="wish"
-              label="願い事"
-              placeholder="恋人ができますように"
-              required
-              color="purple"
-            />
+        <validation-observer v-slot="{ invalid }">
+          <form>
+            <v-container>
+              <validation-provider
+                v-slot="{ errors }"
+                name="願い事"
+                rules="required|max:15|wish"
+              >
+                <v-text-field
+                  v-model="wish"
+                  label="願い事"
+                  placeholder="恋人ができますように"
+                  counter="15"
+                  :error-messages="errors"
+                  hint="語尾が「ように」「欲しい」「ください」のいずれかになるように入力してください"
+                  persistent-hint
+                  required
+                  color="purple"
+                />
+              </validation-provider>
 
-            <v-btn
-              dark
-              block
-              color="purple"
-              class="py-6"
-              @click="decide"
-            >
-              決定する
-            </v-btn>
-          </v-container>
-        </form>
+              <v-btn
+                block
+                color="purple"
+                class="py-6 mt-3"
+                :disabled="invalid"
+                @click="decide"
+              >
+                決定する
+              </v-btn>
+            </v-container>
+          </form>
+        </validation-observer>
       </v-card>
     </v-col>
   </v-row>
