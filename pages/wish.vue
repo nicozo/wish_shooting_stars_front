@@ -5,7 +5,10 @@
     dense
   >
     <v-col cols="12">
-      <v-card id="wish-form">
+      <v-card
+        id="wish-form"
+        flat
+      >
         <v-card-title>
           願い事を一つ決めよう！
         </v-card-title>

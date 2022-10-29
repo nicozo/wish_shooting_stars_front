@@ -1,5 +1,9 @@
 <template>
-  <v-footer app>
+  <v-footer
+    app
+    dark
+    color="transparent"
+  >
     <v-row dense>
       <v-col
         cols="12"
@@ -7,7 +11,7 @@
       >
         <div class="text-center">
           &copy;2022
-          <strong />
+          <strong>{{ appName }}</strong>
         </div>
       </v-col>
     </v-row>
@@ -15,9 +19,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class AppFooter extends Vue {
+  @Prop({ type: String }) appName: string
 }
 </script>

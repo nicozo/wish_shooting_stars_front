@@ -1,5 +1,10 @@
 <template>
-  <v-app-bar app>
+  <v-app-bar
+    app
+    dark
+    elevation="0"
+    color="transparent"
+  >
     <v-toolbar-title>
       {{ appName }}
     </v-toolbar-title>
