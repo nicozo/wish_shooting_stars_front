@@ -27,7 +27,8 @@ extend('max', {
 
 extend('wish', {
   validate (value) {
-    const regex = new RegExp('ように$|ほしい$|ください$|欲しい$|下さい$')
+    const pattern = 'ように$|ほしい$|ください$|欲しい$|下さい$'
+    const regex = new RegExp(pattern)
 
     return regex.test(value)
   },
