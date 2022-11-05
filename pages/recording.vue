@@ -63,9 +63,47 @@ export default class RecordingPage extends Vue {
   listening = false
   disabled = false
   numberOfShootingStars = 7
+  timeout = 2000
+  recognition = ''
+  language = 'ja-JP'
+
+  created () {
+    this.initializeWebSpeechApi()
+  }
 
   mounted () {
     this.setShootingStars()
+    this.setLastShootingStar()
+  }
+
+  initializeWebSpeechApi() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    this.recognition = new SpeechRecognition()
+    this.recognition.lang = this.language
+    // this.recognition.interimResults = true
+    if (typeof SpeechRecognition === "undefined") {
+      console.log('ユーザのブラウザは音声合成に対応しています。')
+    } else {
+      console.log('ユーザのブラウザは音声合成に対応していません。')
+    }
+  }
+
+  startRecording () {
+    const shootingStar = document.querySelector('.shooting_star')!
+    shootingStar.addEventListener('animationstart', () => {
+      this.recognition.start()
+    })
+
+    this.endRecording()
+  }
+
+  endRecording () {
+    const lastShootingStar = document.querySelector('.last_shooting_star')!
+    lastShootingStar.addEventListener('animationend', () => {
+      this.recognition.onresult = (event) => {
+        console.log(event)
+      }
+    })
   }
 
   record () {
@@ -73,17 +111,18 @@ export default class RecordingPage extends Vue {
     if (this.isListening()) {
       this.changeDisabled()
       this.startShootingStarAnimation()
+      this.startRecording()
     }
   }
 
   startShootingStarAnimation () {
     setTimeout(() => {
-      const shootingStars = document.querySelectorAll('.shooting_star')
+      const shootingStars = document.querySelectorAll('.shooting_star')!
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
         dom.classList.add('shooting_star_animation')
       }
-    }, 2000)
+    }, this.timeout)
   }
 
   createShootingStars () {
@@ -97,6 +136,13 @@ export default class RecordingPage extends Vue {
     for (let i = 0; i < this.numberOfShootingStars; i++) {
       this.createShootingStars()
     }
+  }
+
+  setLastShootingStar () {
+    const shootingStarEl = document.querySelector('.shooting_star')!
+
+    shootingStarEl.classList.add('last_shooting_star')
+    console.log(shootingStarEl)
   }
 
   changeListening () {
@@ -116,7 +162,7 @@ export default class RecordingPage extends Vue {
 <style>
 .btnripple{
   /*波紋の基点とするためrelativeを指定*/
-	position: relative;
+  position: relative;
   /*アニメーションの設定*/
   transition: all .3s;
 }
@@ -141,18 +187,18 @@ export default class RecordingPage extends Vue {
 
 /*波形の2つ目は0.5秒遅らせてアニメーション*/
 .btnripple::before {
-  animation-delay:.5s; 
+  animation-delay:.5s;
 }
 
 /*波形のアニメーション*/
 @keyframes circleanime{
-	0%{
+  0%{
     transform: scale(0.68);
-	}
-	100%{
-		transform: scale(1.2);
-		opacity: 0;
-	}
+  }
+  100%{
+    transform: scale(1.2);
+    opacity: 0;
+  }
 }
 
 .shooting_star{
@@ -197,6 +243,14 @@ export default class RecordingPage extends Vue {
   }
 }
 
+.last_shooting_star{
+  top: 0;
+  right: 600px;
+  left: initial;
+  animation-delay: 1s;
+  animation-duration: 3s;
+}
+
 .shooting_star:nth-child(1){
   top: 0;
   right: 0;
@@ -206,14 +260,6 @@ export default class RecordingPage extends Vue {
 }
 
 .shooting_star:nth-child(2){
-  top: 0;
-  right: 80px;
-  left: initial;
-  animation-delay: 0.2s;
-  animation-duration: 4s;
-}
-
-.shooting_star:nth-child(3){
   top: 80px;
   right: 0px;
   left: initial;
@@ -221,7 +267,7 @@ export default class RecordingPage extends Vue {
   animation-duration: 1s;
 }
 
-.shooting_star:nth-child(4){
+.shooting_star:nth-child(3){
   top: 0;
   right: 180px;
   left: initial;
@@ -229,7 +275,7 @@ export default class RecordingPage extends Vue {
   animation-duration: 1.5s;
 }
 
-.shooting_star:nth-child(5){
+.shooting_star:nth-child(4){
   top: 0;
   right: 400px;
   left: initial;
@@ -237,14 +283,15 @@ export default class RecordingPage extends Vue {
   animation-duration: 2.5s;
 }
 
-.shooting_star:nth-child(6){
+.shooting_star:nth-child(5){
   top: 0;
-  right: 600px;
+  right: 80px;
   left: initial;
-  animation-delay: 1s;
+  animation-delay: 0.2s;
   animation-duration: 3s;
 }
-.shooting_star:nth-child(7){
+
+.shooting_star:nth-child(6){
   top: 300px;
   right: 0px;
   left: initial;
