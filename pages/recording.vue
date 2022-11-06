@@ -60,12 +60,10 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class RecordingPage extends Vue {
-  listening = false
-  disabled = false
-  numberOfShootingStars = 7
-  timeout = 2000
-  recognition = ''
-  language = 'ja-JP'
+  listening: boolean = false
+  disabled: boolean = false
+  numberOfShootingStars: number = 7
+  timeout: number = 2000
 
   created () {
     this.initializeWebSpeechApi()
@@ -76,22 +74,14 @@ export default class RecordingPage extends Vue {
     this.setLastShootingStar()
   }
 
-  initializeWebSpeechApi() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    this.recognition = new SpeechRecognition()
-    this.recognition.lang = this.language
-    // this.recognition.interimResults = true
-    if (typeof SpeechRecognition === "undefined") {
-      console.log('ユーザのブラウザは音声合成に対応しています。')
-    } else {
-      console.log('ユーザのブラウザは音声合成に対応していません。')
-    }
+  initializeWebSpeechApi () {
+    this.$recognition.initializeApi()
   }
 
   startRecording () {
     const shootingStar = document.querySelector('.shooting_star')!
     shootingStar.addEventListener('animationstart', () => {
-      this.recognition.start()
+      this.$recognition.start()
     })
 
     this.endRecording()
@@ -100,9 +90,7 @@ export default class RecordingPage extends Vue {
   endRecording () {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
     lastShootingStar.addEventListener('animationend', () => {
-      this.recognition.onresult = (event) => {
-        console.log(event)
-      }
+      this.$recognition.result()
     })
   }
 
