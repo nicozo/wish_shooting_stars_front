@@ -8,6 +8,7 @@
       "ESNext.AsyncIterable",
       "DOM"
     ],
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "isolatedModules": true,
     "allowJs": true,
