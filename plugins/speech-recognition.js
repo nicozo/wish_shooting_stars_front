@@ -21,6 +21,7 @@ class SpeechRecognition {
 
   result () {
     this.recognition.onresult = (event) => {
+      localStorage.setItem('result', JSON.stringify(event))
       console.log(event)
     }
   }

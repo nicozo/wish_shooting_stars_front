@@ -67,12 +67,13 @@ export default class WishPage extends Vue {
         }
       }
     )
-      .then(res => this.decideSuccessful(res.title))
+      .then(res => this.decideSuccessful(res))
       .catch(e => console.log(e))
   }
 
-  decideSuccessful (res: string) {
-    localStorage.wish = res
+  decideSuccessful (res: object) {
+    localStorage.setItem('wish', JSON.stringify(res))
+    this.$router.push('/recording')
   }
 }
 </script>
