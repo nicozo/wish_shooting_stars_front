@@ -7,11 +7,16 @@ class SpeechRecognition {
     this.recognition.lang = 'ja-JP'
     this.recognition.interimResults = true
     this.recognition.continuous = true
-    console.log(this.recognition)
   }
 
   start () {
     this.recognition.start()
+    console.log('recording')
+  }
+
+  stop () {
+    this.recognition.stop()
+    console.log('end')
   }
 
   result () {
