@@ -64,14 +64,22 @@ export default class RecordingPage extends Vue {
   disabled: boolean = false
   numberOfShootingStars: number = 7
   timeout: number = 2000
+  apiKey: string = ''
+  convertedWish: string = ''
 
   created () {
     this.initializeWebSpeechApi()
+    this.setApiKey()
   }
 
   mounted () {
     this.setShootingStars()
     this.setLastShootingStar()
+    this.getHiragana(JSON.parse(localStorage.wish).title)
+  }
+
+  setApiKey () {
+    this.apiKey = this.$config.apiKey
   }
 
   initializeWebSpeechApi () {
@@ -79,11 +87,11 @@ export default class RecordingPage extends Vue {
   }
 
   startRecording () {
-    const shootingStar = document.querySelector('.shooting_star')!
-    shootingStar.addEventListener('animationstart', () => {
-      this.$recognition.start()
-    })
-
+    // const shootingStar = document.querySelector('.shooting_star')!
+    // shootingStar.addEventListener('animationstart', () => {
+    //   this.$recognition.start()
+    // })
+    this.$recognition.start()
     this.endRecording()
   }
 
@@ -92,6 +100,7 @@ export default class RecordingPage extends Vue {
     lastShootingStar.addEventListener('animationend', () => {
       this.$recognition.result()
       this.$recognition.stop()
+      this.judgeWish()
     })
   }
 
@@ -144,6 +153,31 @@ export default class RecordingPage extends Vue {
 
   changeDisabled () {
     this.disabled = true
+  }
+
+  getHiragana (sentence: string) {
+    const APIURL = 'https://labs.goo.ne.jp/api/hiragana'
+    const OUTPUT_TYPE = 'hiragana'
+    const data = {
+      app_id: this.apiKey,
+      sentence,
+      output_type: OUTPUT_TYPE
+    }
+
+    this.$axios.$post(
+      APIURL,
+      data
+    )
+      .then(res => this.convertedWish = res.converted)
+      .catch(e => console.log(e)
+      )
+  }
+
+  judgeWish () {
+    const result = JSON.parse(localStorage.result)
+    this.getHiragana(result)
+    // const splitedWords = result.split('欲しい')
+    // console.log(result.split('欲しい'))
   }
 }
 </script>

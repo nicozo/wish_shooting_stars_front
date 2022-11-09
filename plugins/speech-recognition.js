@@ -5,8 +5,8 @@ class SpeechRecognition {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     this.recognition = new SpeechRecognition()
     this.recognition.lang = 'ja-JP'
-    this.recognition.interimResults = true
-    this.recognition.continuous = true
+    this.recognition.interimResults = false
+    this.recognition.continuous = false
   }
 
   start () {

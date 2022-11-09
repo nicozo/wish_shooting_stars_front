@@ -27,7 +27,8 @@ const config: NuxtConfig = {
   },
 
   publicRuntimeConfig: {
-    appName: process.env.APP_NAME
+    appName: process.env.APP_NAME,
+    apiKey: process.env.GOO_API_KEY
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
