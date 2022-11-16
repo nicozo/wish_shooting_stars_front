@@ -59,6 +59,10 @@ export default class WishPage extends Vue {
   wish = ''
 
   async decide () {
+    await this.wishSubmit()
+  }
+
+  async wishSubmit () {
     await this.$axios.$post(
       '/api/v1/wishes',
       {
@@ -67,12 +71,26 @@ export default class WishPage extends Vue {
         }
       }
     )
-      .then(res => this.decideSuccessful(res.title))
+      .then(res => this.submitSuccessful(res))
       .catch(e => console.log(e))
   }
 
-  decideSuccessful (res: string) {
-    localStorage.wish = res
+  submitSuccessful (res: object) {
+    this.setWishInLocalStorage(res)
+    this.getHiragana(res.title)
+    this.$router.push('/recording')
+  }
+
+  setWishInLocalStorage (res: object) {
+    localStorage.setItem('wish', JSON.stringify(res))
+  }
+
+  setHiraganaInLocalStorage (sentence: string) {
+    localStorage.setItem('convertedWish', JSON.stringify(sentence))
+  }
+
+  getHiragana (sentence: string) {
+    this.$hiragana.apiSubmit(sentence).then(response => this.setHiraganaInLocalStorage(response.converted))
   }
 }
 </script>

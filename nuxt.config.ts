@@ -27,7 +27,8 @@ const config: NuxtConfig = {
   },
 
   publicRuntimeConfig: {
-    appName: process.env.APP_NAME
+    appName: process.env.APP_NAME,
+    apiKey: process.env.GOO_API_KEY
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -37,7 +38,9 @@ const config: NuxtConfig = {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     'plugins/axios.js',
-    'plugins/vee-validate.js'
+    'plugins/vee-validate.js',
+    'plugins/speech-recognition.js',
+    'plugins/hiragana-api.ts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
