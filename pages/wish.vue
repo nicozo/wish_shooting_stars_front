@@ -76,13 +76,21 @@ export default class WishPage extends Vue {
   }
 
   submitSuccessful (res: object) {
-    localStorage.setItem('wish', JSON.stringify(res))
-    this.$hiragana.apiSubmit(res.title).then(response => this.setHiragana(response.converted))
+    this.setWishInLocalStorage(res)
+    this.getHiragana(res.title)
     this.$router.push('/recording')
   }
 
-  setHiragana (sentence: string) {
+  setWishInLocalStorage (res: object) {
+    localStorage.setItem('wish', JSON.stringify(res))
+  }
+
+  setHiraganaInLocalStorage (sentence: string) {
     localStorage.setItem('convertedWish', JSON.stringify(sentence))
+  }
+
+  getHiragana (sentence: string) {
+    this.$hiragana.apiSubmit(sentence).then(response => this.setHiraganaInLocalStorage(response.converted))
   }
 }
 </script>
