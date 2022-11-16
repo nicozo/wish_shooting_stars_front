@@ -14,6 +14,7 @@
             流れ星観察中！
           </v-card-title>
         </div>
+
         <div v-show="!isListening()">
           <v-card-title class="justify-center mb-5">
             流れ星にWISHを３回唱えよう！
@@ -47,7 +48,10 @@
                 </v-btn>
               </v-fab-transition>
             </template>
-            <span>クリックで録音！</span>
+
+            <span>
+              クリックで録音！
+            </span>
           </v-tooltip>
         </v-row>
       </v-card>
@@ -60,26 +64,18 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class RecordingPage extends Vue {
-  listening: boolean = false
-  disabled: boolean = false
-  numberOfShootingStars: number = 7
-  timeout: number = 2000
-  apiKey: string = ''
-  convertedWish: string = ''
+  listening = false
+  disabled = false
+  numberOfShootingStars = 7
+  timeout = 2000
 
   created () {
     this.initializeWebSpeechApi()
-    this.setApiKey()
   }
 
   mounted () {
     this.setShootingStars()
     this.setLastShootingStar()
-    this.getHiragana(JSON.parse(localStorage.wish).title)
-  }
-
-  setApiKey () {
-    this.apiKey = this.$config.apiKey
   }
 
   initializeWebSpeechApi () {
@@ -87,10 +83,6 @@ export default class RecordingPage extends Vue {
   }
 
   startRecording () {
-    // const shootingStar = document.querySelector('.shooting_star')!
-    // shootingStar.addEventListener('animationstart', () => {
-    //   this.$recognition.start()
-    // })
     this.$recognition.start()
     this.endRecording()
   }
@@ -140,7 +132,6 @@ export default class RecordingPage extends Vue {
     const shootingStarEl = document.querySelector('.shooting_star')!
 
     shootingStarEl.classList.add('last_shooting_star')
-    console.log(shootingStarEl)
   }
 
   changeListening () {
@@ -155,27 +146,9 @@ export default class RecordingPage extends Vue {
     this.disabled = true
   }
 
-  getHiragana (sentence: string) {
-    const APIURL = 'https://labs.goo.ne.jp/api/hiragana'
-    const OUTPUT_TYPE = 'hiragana'
-    const data = {
-      app_id: this.apiKey,
-      sentence,
-      output_type: OUTPUT_TYPE
-    }
-
-    this.$axios.$post(
-      APIURL,
-      data
-    )
-      .then(res => this.convertedWish = res.converted)
-      .catch(e => console.log(e)
-      )
-  }
-
   judgeWish () {
     const result = JSON.parse(localStorage.result)
-    this.getHiragana(result)
+    this.$hiragana.apiSubmit(result).then(response => console.log('result converted', response))
     // const splitedWords = result.split('欲しい')
     // console.log(result.split('欲しい'))
   }
