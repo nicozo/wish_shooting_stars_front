@@ -57,8 +57,21 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class WishPage extends Vue {
   wish = ''
+  apiKey = ''
+
+  created () {
+    this.setApiKey()
+  }
+
+  setApiKey () {
+    this.apiKey = this.$config.apiKey
+  }
 
   async decide () {
+    await this.wishSubmit()
+  }
+
+  async wishSubmit () {
     await this.$axios.$post(
       '/api/v1/wishes',
       {
@@ -67,13 +80,35 @@ export default class WishPage extends Vue {
         }
       }
     )
-      .then(res => this.decideSuccessful(res))
+      .then(res => this.submitSuccessful(res))
       .catch(e => console.log(e))
   }
 
-  decideSuccessful (res: object) {
+  submitSuccessful (res: object) {
     localStorage.setItem('wish', JSON.stringify(res))
+    this.apiSubmit(res.title)
     this.$router.push('/recording')
+  }
+
+  async apiSubmit (sentence: string) {
+    const APIURL = 'https://labs.goo.ne.jp/api/hiragana'
+    const OUTPUT_TYPE = 'hiragana'
+    const data = {
+      app_id: this.apiKey,
+      sentence,
+      output_type: OUTPUT_TYPE
+    }
+
+    await this.$axios.$post(
+      APIURL,
+      data
+    )
+      .then(res => this.setHiragana(res.converted))
+      .catch(e => console.log(e))
+  }
+
+  setHiragana (sentence: string) {
+    localStorage.setItem('convertedWish', JSON.stringify(sentence))
   }
 }
 </script>
