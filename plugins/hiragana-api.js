@@ -20,6 +20,6 @@ class Hiragana {
   }
 }
 
-export default ({$axios, $config}, inject) => {
-  inject('hiragana', new Hiragana({$axios, $config}))
+export default ({ $axios, $config }, inject) => {
+  inject('hiragana', new Hiragana({ $axios, $config }))
 }
