@@ -40,7 +40,7 @@ const config: NuxtConfig = {
     'plugins/axios.js',
     'plugins/vee-validate.js',
     'plugins/speech-recognition.js',
-    'plugins/hiragana-api.js'
+    'plugins/hiragana-api.ts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

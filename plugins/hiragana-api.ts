@@ -1,10 +1,15 @@
+import { Plugin, Context } from '@nuxt/types'
+
 class Hiragana {
-  constructor (ctx) {
+  $axios: object
+  apiKey: string
+
+  constructor (ctx: Context) {
     this.$axios = ctx.$axios
     this.apiKey = ctx.$config.apiKey
   }
 
-  async apiSubmit (sentence) {
+  async apiSubmit (sentence: string) {
     const APIURL = 'https://labs.goo.ne.jp/api/hiragana'
     const OUTPUT_TYPE = 'hiragana'
     const data = {
@@ -20,6 +25,8 @@ class Hiragana {
   }
 }
 
-export default ({ $axios, $config }, inject) => {
-  inject('hiragana', new Hiragana({ $axios, $config }))
+const hiragana: Plugin = (context: Context, inject) => {
+  inject('hiragana', new Hiragana(context))
 }
+
+export default hiragana
