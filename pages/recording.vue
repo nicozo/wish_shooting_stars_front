@@ -89,10 +89,11 @@ export default class RecordingPage extends Vue {
 
   endRecording () {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
+
     lastShootingStar.addEventListener('animationend', () => {
       this.$recognition.result()
       this.$recognition.stop()
-      this.judgeWish()
+      this.$router.push('/judge')
     })
   }
 
@@ -108,6 +109,7 @@ export default class RecordingPage extends Vue {
   startShootingStarAnimation () {
     setTimeout(() => {
       const shootingStars = document.querySelectorAll('.shooting_star')!
+
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
         dom.classList.add('shooting_star_animation')
@@ -118,6 +120,7 @@ export default class RecordingPage extends Vue {
   createShootingStars () {
     const starrySky = document.querySelector('.starry_sky')!
     const shootingStarEl = document.createElement('span')!
+
     shootingStarEl.className = 'shooting_star'
     starrySky.appendChild(shootingStarEl)
   }
@@ -144,13 +147,6 @@ export default class RecordingPage extends Vue {
 
   changeDisabled () {
     this.disabled = true
-  }
-
-  judgeWish () {
-    const result = JSON.parse(localStorage.result)
-    this.$hiragana.apiSubmit(result).then(response => console.log('result converted', response))
-    // const splitedWords = result.split('欲しい')
-    // console.log(result.split('欲しい'))
   }
 }
 </script>

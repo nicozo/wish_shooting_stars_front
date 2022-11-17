@@ -75,7 +75,7 @@ export default class WishPage extends Vue {
       .catch(e => console.log(e))
   }
 
-  submitSuccessful (res: object) {
+  submitSuccessful (res: { title: string }) {
     this.setWishInLocalStorage(res)
     this.getHiragana(res.title)
     this.$router.push('/recording')
