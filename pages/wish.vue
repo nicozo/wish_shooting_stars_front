@@ -86,7 +86,13 @@ export default class WishPage extends Vue {
   }
 
   setHiraganaInLocalStorage (sentence: string) {
-    localStorage.setItem('convertedWish', JSON.stringify(sentence))
+    const str = this.deleteWhiteSpace(sentence)
+
+    localStorage.setItem('convertedWish', JSON.stringify(str))
+  }
+
+  deleteWhiteSpace (sentence: string) {
+    return sentence.replace(/\s+/g, '')
   }
 
   getHiragana (sentence: string) {
