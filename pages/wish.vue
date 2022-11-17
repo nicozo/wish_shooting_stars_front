@@ -90,7 +90,7 @@ export default class WishPage extends Vue {
   }
 
   getHiragana (sentence: string) {
-    this.$hiragana.apiSubmit(sentence).then(response => this.setHiraganaInLocalStorage(response.converted))
+    this.$hiragana.apiSubmit(sentence).then(res => this.setHiraganaInLocalStorage(res.converted))
   }
 }
 </script>
