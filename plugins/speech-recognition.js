@@ -20,7 +20,7 @@ class SpeechRecognition {
   result () {
     this.recognition.onresult = (event) => {
       this.setResultInLocalStorage(event)
-      console.log(event.results[0][0].transcript)
+      console.log('音声結果', event.results[0][0].transcript)
     }
   }
 
