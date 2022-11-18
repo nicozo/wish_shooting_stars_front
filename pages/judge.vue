@@ -1,6 +1,7 @@
 z<template>
   <div>
     judge page
+    ひらがな化：{{ convertedResult }}
   </div>
 </template>
 
@@ -9,6 +10,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class JudgePage extends Vue {
+  concatenatedWish = ''
   convertedResult = ''
   keyword = ''
   endingWords = [
@@ -37,26 +39,36 @@ export default class JudgePage extends Vue {
     this.judgeWish()
   }
 
-  judgeWish () {
-    console.log('Judge発火')
-    this.checkEndingWord()
-  }
-
   deleteWhiteSpace (sentence: string) {
     return sentence.replace(/\s+/g, '')
   }
 
-  checkEndingWord () {
-    for (let i = 0; i < this.endingWords.length; i++) {
-      const word = this.endingWords[i]
-      const regex = new RegExp(word)
+  judgeWish () {
+    console.log('Judge発火')
+    this.concatenateWish()
+    this.matchNumberOfCharacters(this.concatenatedWish, this.convertedResult)
+  }
 
-      // console.log(regex.test(this.convertedResult))
-      if (regex.test(this.convertedResult)) {
-        // console.log('word', word)
-        this.keyword = word
-      }
-    }
+  concatenateWish () {
+    const convertedWish = JSON.parse(localStorage.convertedWish)
+
+    this.concatenatedWish = convertedWish.repeat(3)
+    console.log('concatenatedWish', this.concatenatedWish)
+  }
+
+  countCharacters (sentence :string) {
+    const segmenter = new Intl.Segmenter("ja", { granularity: "grapheme" })
+
+    console.log([...segmenter.segment(sentence)])
+    return [...segmenter.segment(sentence)].length
+  }
+
+  matchNumberOfCharacters (wishSentence: string, resultSentence: string) {
+    const result1 = this.countCharacters(wishSentence)
+    const result2 = this.countCharacters(resultSentence)
+
+    console.log(result1 === result2)
+    return result1 === result2
   }
 }
 </script>

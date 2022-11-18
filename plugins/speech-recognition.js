@@ -25,7 +25,13 @@ class SpeechRecognition {
   }
 
   setResultInLocalStorage (event) {
-    localStorage.setItem('result', JSON.stringify(event.results[0][0].transcript))
+    const result = this.deleteWhiteSpace(event.results[0][0].transcript)
+
+    localStorage.setItem('result', JSON.stringify(result))
+  }
+
+  deleteWhiteSpace (sentence) {
+    return sentence.replace(/\s+/g, '')
   }
 }
 
