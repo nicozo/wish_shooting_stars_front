@@ -37,7 +37,6 @@ export default class JudgePage extends Vue {
   setHiraganaResult (hiraganaSentence: string) {
     this.hiraganaResult = this.deleteWhiteSpace(hiraganaSentence)
     console.log('セット完了')
-    // TODO ひらがな化される前に判定処理が発火してしまうため、処理が終了してから発火するようここに記載。
     this.judgeWish()
   }
 
@@ -56,10 +55,6 @@ export default class JudgePage extends Vue {
     return [...segmenter.segment(sentence)]
   }
 
-  matchNumberOfCharacters (length1: number, length2: number) {
-    return length1 === length2
-  }
-
   matchWish (wishSentence: string, resultSentence: string) {
     const splitWishSentence = this.splitWish(wishSentence)
     const splitResultSentence = this.splitWish(resultSentence)
@@ -68,10 +63,29 @@ export default class JudgePage extends Vue {
 
     const result1 = this.matchNumberOfCharacters(splitWishSentence.length, splitResultSentence.length)
     const result2 = this.compareCharacters(splitWishSentence, splitResultSentence)
+    const result3 = this.compareOneCharacters(splitWishSentence, splitResultSentence)
+    console.log('文字数検証', result1)
+    console.log('文字一致検証', result2)
+    console.log('個別文字一致検証', result3)
   }
 
-  compareCharacters (result1: object[], result2: object[]) {
-    return result1.toString() === result2.toString()
+  matchNumberOfCharacters (wishSentenceLength: number, resultSentenceLength: number) {
+    return wishSentenceLength === resultSentenceLength
+  }
+
+  compareCharacters (wishSentence: object[], resultSentence: object[]) {
+    return wishSentence.toString() === resultSentence.toString()
+  }
+
+  compareOneCharacters (wishSentence: object[], resultSentence: object[]) {
+    const result = resultSentence.map((value, index) => {
+      const wishCharacter = wishSentence[index].segment
+      const resultCharacter = value.segment
+
+      return wishCharacter === resultCharacter
+    })
+
+    return result
   }
 }
 </script>
