@@ -30,7 +30,6 @@ export default class JudgePage extends Vue {
     const result = JSON.parse(localStorage.result)
 
     this.$hiragana.apiSubmit(result).then(res => this.setHiraganaResult(res.converted))
-    console.log('ひらがな化終了')
     console.log('ひらがな化結果', this.hiraganaResult)
   }
 
@@ -67,6 +66,7 @@ export default class JudgePage extends Vue {
     console.log('文字数検証', result1)
     console.log('文字一致検証', result2)
     console.log('個別文字一致検証', result3)
+    this.calculateScore(result1, result2, result3)
   }
 
   matchNumberOfCharacters (wishSentenceLength: number, resultSentenceLength: number) {
@@ -86,6 +86,53 @@ export default class JudgePage extends Vue {
     })
 
     return result
+  }
+
+  calculateScore (result1: boolean, result2: boolean, result3: []) {
+    const score1 = result1 ? 30 : 0
+    const score2 = result2 ? 30 : 0
+    const score3 = this.calculateScoreOfCharacters(result3)
+    console.log('score1', score1)
+    console.log('score2', score2)
+    console.log('score3', score3)
+  }
+
+  countTrueCharacters (result3: []) {
+    const isTrue = (el: boolean) => el === true
+    const trueNumber = result3.filter(isTrue).length
+    const result = result3.length - trueNumber
+    console.log('true数の差分', result)
+
+    return result
+  }
+
+  calculateScoreOfCharacters (result3: []) {
+    const difference = this.countTrueCharacters(result3)
+    console.log('差分', difference)
+
+    // switch (difference) {
+    //   case 0:
+    //     return 40
+    //   case difference < 3:
+    //     return 30
+    //   case difference < 6:
+    //     return 20
+    //   case difference < 9:
+    //     return 10
+    //   case difference >= 10:
+    //     return 0
+    // }
+    if (difference === 0) {
+      return 40
+    } else if (difference < 3) {
+      return 30
+    } else if (difference < 6) {
+      return 20
+    } else if (difference < 9) {
+      return 10
+    } else if (difference >= 10) {
+      return 0
+    }
   }
 }
 </script>

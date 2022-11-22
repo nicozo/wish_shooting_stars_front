@@ -10,6 +10,7 @@ class Hiragana {
   }
 
   async apiSubmit (sentence: string) {
+    console.log('ひらがな化リクエスト')
     const API_URL = 'https://labs.goo.ne.jp/api/hiragana'
     const OUTPUT_TYPE = 'hiragana'
     const data = {
