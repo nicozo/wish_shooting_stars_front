@@ -68,6 +68,11 @@ export default class RecordingPage extends Vue {
   disabled = false
   numberOfShootingStars = 7
   timeout = 2000
+  recognition = {
+    lang: '',
+    interimResults: false,
+    continuous: false
+  }
 
   created () {
     this.initializeWebSpeechApi()
@@ -79,11 +84,16 @@ export default class RecordingPage extends Vue {
   }
 
   initializeWebSpeechApi () {
-    this.$recognition.initializeApi()
+    // this.$recognition.initializeApi()
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    this.recognition = new SpeechRecognition()
+    this.recognition.lang = 'ja-JP'
+    this.recognition.interimResults = false
+    this.recognition.continuous = false
   }
 
   startRecording () {
-    this.$recognition.start()
+    this.recognition.start()
     this.endRecording()
   }
 
@@ -91,10 +101,23 @@ export default class RecordingPage extends Vue {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
 
     lastShootingStar.addEventListener('animationend', () => {
-      this.$recognition.result()
-      this.$recognition.stop()
-      this.$router.push('/judge')
+      this.recognition.onresult = (event) => {
+        console.log('音声結果', event.results[0][0].transcript)
+        this.setResultInLocalStorage(event.results[0][0].transcript)
+      }
+      this.recognition.stop()
     })
+  }
+
+  setResultInLocalStorage (sentence: string) {
+    const result = this.deleteWhiteSpace(sentence)
+
+    localStorage.setItem('result', JSON.stringify(result))
+    this.$router.push('/judge')
+  }
+
+  deleteWhiteSpace (sentence: string) {
+    return sentence.replace(/\s+/g, '')
   }
 
   record () {

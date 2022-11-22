@@ -28,6 +28,7 @@ export default class JudgePage extends Vue {
 
     this.$hiragana.apiSubmit(result).then(res => this.setConvertedResult(res.converted))
     console.log('ひらがな化終了')
+    console.log('ひらがな化結果', this.convertedResult)
   }
 
   setConvertedResult (sentence: string) {
@@ -46,7 +47,7 @@ export default class JudgePage extends Vue {
   judgeWish () {
     console.log('Judge発火')
     this.concatenateWish()
-    this.matchNumberOfCharacters(this.concatenatedWish, this.convertedResult)
+    this.matchWish(this.concatenatedWish, this.convertedResult)
   }
 
   concatenateWish () {
@@ -56,19 +57,43 @@ export default class JudgePage extends Vue {
     console.log('concatenatedWish', this.concatenatedWish)
   }
 
-  countCharacters (sentence :string) {
-    const segmenter = new Intl.Segmenter("ja", { granularity: "grapheme" })
+  splitWish (sentence :string) {
+    const segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' })
 
-    console.log([...segmenter.segment(sentence)])
-    return [...segmenter.segment(sentence)].length
+    return [...segmenter.segment(sentence)]
   }
 
-  matchNumberOfCharacters (wishSentence: string, resultSentence: string) {
-    const result1 = this.countCharacters(wishSentence)
-    const result2 = this.countCharacters(resultSentence)
+  matchNumberOfCharacters (length1: number, length2: number) {
+    // console.log('length1', length1)
+    // console.log('length2', length2)
+    // console.log(length1 === length2)
+    return length1 === length2
+  }
 
-    console.log(result1 === result2)
-    return result1 === result2
+  matchWish (wishSentence: string, resultSentence: string) {
+    const result1 = this.splitWish(wishSentence)
+    const result2 = this.splitWish(resultSentence)
+    console.log('result1', result1)
+    console.log('result2', result2)
+
+    this.matchNumberOfCharacters(result1.length, result2.length)
+    this.compareCharacters(result1, result2)
+  }
+
+  // compareCharacters (result1: object[], result2: object[]) {
+  //   result1.forEach(word => {
+  //     console.log('word1', word)
+  //     const result1Word = word
+  //   })
+  //   result2.forEach(word => {
+  //     console.log('word2', word)
+  //     const result2Word = word
+  //   })
+  // }
+
+  compareCharacters (result1: object[], result2: object[]) {
+    const result = result1.toString() === result2.toString()
+    console.log(result)
   }
 }
 </script>
