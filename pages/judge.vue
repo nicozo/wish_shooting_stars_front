@@ -10,26 +10,29 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class JudgePage extends Vue {
+  wishObject = {}
   hiraganaWish = ''
   hiraganaResult = ''
 
   created () {
-    this.getHiragana()
-    this.concatenateWish()
+    this.setWishObject(JSON.parse(localStorage.wish))
+    this.concatenateWish(JSON.parse(localStorage.convertedWish))
+    this.getHiragana(JSON.parse(localStorage.result))
   }
 
-  concatenateWish () {
-    const convertedWish = JSON.parse(localStorage.convertedWish)
+  setWishObject (localStorageWish: {}) {
+    this.wishObject = localStorageWish
+  }
+
+  concatenateWish (convertedWish: string) {
     const repeatTimes = 3
 
     this.hiraganaWish = convertedWish.repeat(repeatTimes)
     console.log('hiraganaWish', this.hiraganaWish)
   }
 
-  getHiragana () {
-    const result = JSON.parse(localStorage.result)
-
-    this.$hiragana.apiSubmit(result).then(res => this.setHiraganaResult(res.converted))
+  getHiragana (localStorageResult: string) {
+    this.$hiragana.apiSubmit(localStorageResult).then(res => this.setHiraganaResult(res.converted))
     console.log('ひらがな化結果', this.hiraganaResult)
   }
 
@@ -88,16 +91,21 @@ export default class JudgePage extends Vue {
     return result
   }
 
-  calculateScore (result1: boolean, result2: boolean, result3: []) {
+  calculateScore (result1: boolean, result2: boolean, result3: boolean[]) {
     const score1 = result1 ? 30 : 0
     const score2 = result2 ? 30 : 0
     const score3 = this.calculateScoreOfCharacters(result3)
     console.log('score1', score1)
     console.log('score2', score2)
     console.log('score3', score3)
+
+    const score = score1 + score2 + score3
+    console.log('score', score)
+
+    this.submitScore(score)
   }
 
-  countTrueCharacters (result3: []) {
+  countTrueCharacters (result3: boolean[]) {
     const isTrue = (el: boolean) => el === true
     const trueNumber = result3.filter(isTrue).length
     const result = result3.length - trueNumber
@@ -106,22 +114,9 @@ export default class JudgePage extends Vue {
     return result
   }
 
-  calculateScoreOfCharacters (result3: []) {
+  calculateScoreOfCharacters (result3: boolean[]) {
     const difference = this.countTrueCharacters(result3)
     console.log('差分', difference)
-
-    // switch (difference) {
-    //   case 0:
-    //     return 40
-    //   case difference < 3:
-    //     return 30
-    //   case difference < 6:
-    //     return 20
-    //   case difference < 9:
-    //     return 10
-    //   case difference >= 10:
-    //     return 0
-    // }
     if (difference === 0) {
       return 40
     } else if (difference < 3) {
@@ -130,9 +125,20 @@ export default class JudgePage extends Vue {
       return 20
     } else if (difference < 9) {
       return 10
-    } else if (difference >= 10) {
+    } else {
       return 0
     }
+  }
+
+  async submitScore (score: number) {
+    await this.$axios.$patch(
+      `/api/v1/wishes/${this.wishObject.id}`,
+      {
+        wish: {
+          score: score
+        }
+      }
+    )
   }
 }
 </script>
