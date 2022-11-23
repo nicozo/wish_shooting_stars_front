@@ -11,19 +11,27 @@ class SpeechRecognition {
 
   start () {
     this.recognition.start()
-    console.log('recording')
   }
 
   stop () {
     this.recognition.stop()
-    console.log('end')
   }
 
   result () {
     this.recognition.onresult = (event) => {
-      localStorage.setItem('result', JSON.stringify(event.results[0][0].transcript))
-      console.log(event.results[0][0].transcript)
+      this.setResultInLocalStorage(event)
+      console.log('音声結果', event.results[0][0].transcript)
     }
+  }
+
+  setResultInLocalStorage (event) {
+    const result = this.deleteWhiteSpace(event.results[0][0].transcript)
+
+    localStorage.setItem('result', JSON.stringify(result))
+  }
+
+  deleteWhiteSpace (sentence) {
+    return sentence.replace(/\s+/g, '')
   }
 }
 

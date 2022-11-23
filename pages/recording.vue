@@ -68,6 +68,11 @@ export default class RecordingPage extends Vue {
   disabled = false
   numberOfShootingStars = 7
   timeout = 2000
+  recognition = {
+    lang: '',
+    interimResults: false,
+    continuous: false
+  }
 
   created () {
     this.initializeWebSpeechApi()
@@ -79,21 +84,40 @@ export default class RecordingPage extends Vue {
   }
 
   initializeWebSpeechApi () {
-    this.$recognition.initializeApi()
+    // this.$recognition.initializeApi()
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    this.recognition = new SpeechRecognition()
+    this.recognition.lang = 'ja-JP'
+    this.recognition.interimResults = false
+    this.recognition.continuous = false
   }
 
   startRecording () {
-    this.$recognition.start()
+    this.recognition.start()
     this.endRecording()
   }
 
   endRecording () {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
+
     lastShootingStar.addEventListener('animationend', () => {
-      this.$recognition.result()
-      this.$recognition.stop()
-      this.judgeWish()
+      this.recognition.onresult = (event) => {
+        console.log('音声結果', event.results[0][0].transcript)
+        this.setResultInLocalStorage(event.results[0][0].transcript)
+      }
+      this.recognition.stop()
     })
+  }
+
+  setResultInLocalStorage (sentence: string) {
+    const result = this.deleteWhiteSpace(sentence)
+
+    localStorage.setItem('result', JSON.stringify(result))
+    this.$router.push('/judge')
+  }
+
+  deleteWhiteSpace (sentence: string) {
+    return sentence.replace(/\s+/g, '')
   }
 
   record () {
@@ -108,6 +132,7 @@ export default class RecordingPage extends Vue {
   startShootingStarAnimation () {
     setTimeout(() => {
       const shootingStars = document.querySelectorAll('.shooting_star')!
+
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
         dom.classList.add('shooting_star_animation')
@@ -118,6 +143,7 @@ export default class RecordingPage extends Vue {
   createShootingStars () {
     const starrySky = document.querySelector('.starry_sky')!
     const shootingStarEl = document.createElement('span')!
+
     shootingStarEl.className = 'shooting_star'
     starrySky.appendChild(shootingStarEl)
   }
@@ -144,13 +170,6 @@ export default class RecordingPage extends Vue {
 
   changeDisabled () {
     this.disabled = true
-  }
-
-  judgeWish () {
-    const result = JSON.parse(localStorage.result)
-    this.$hiragana.apiSubmit(result).then(response => console.log('result converted', response))
-    // const splitedWords = result.split('欲しい')
-    // console.log(result.split('欲しい'))
   }
 }
 </script>

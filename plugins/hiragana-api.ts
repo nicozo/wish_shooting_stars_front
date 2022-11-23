@@ -10,7 +10,8 @@ class Hiragana {
   }
 
   async apiSubmit (sentence: string) {
-    const APIURL = 'https://labs.goo.ne.jp/api/hiragana'
+    console.log('ひらがな化リクエスト')
+    const API_URL = 'https://labs.goo.ne.jp/api/hiragana'
     const OUTPUT_TYPE = 'hiragana'
     const data = {
       app_id: this.apiKey,
@@ -19,7 +20,7 @@ class Hiragana {
     }
 
     return await this.$axios.$post(
-      APIURL,
+      API_URL,
       data
     )
   }

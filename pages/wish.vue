@@ -75,7 +75,7 @@ export default class WishPage extends Vue {
       .catch(e => console.log(e))
   }
 
-  submitSuccessful (res: object) {
+  submitSuccessful (res: { title: string }) {
     this.setWishInLocalStorage(res)
     this.getHiragana(res.title)
     this.$router.push('/recording')
@@ -86,11 +86,17 @@ export default class WishPage extends Vue {
   }
 
   setHiraganaInLocalStorage (sentence: string) {
-    localStorage.setItem('convertedWish', JSON.stringify(sentence))
+    const str = this.deleteWhiteSpace(sentence)
+
+    localStorage.setItem('convertedWish', JSON.stringify(str))
+  }
+
+  deleteWhiteSpace (sentence: string) {
+    return sentence.replace(/\s+/g, '')
   }
 
   getHiragana (sentence: string) {
-    this.$hiragana.apiSubmit(sentence).then(response => this.setHiraganaInLocalStorage(response.converted))
+    this.$hiragana.apiSubmit(sentence).then(res => this.setHiraganaInLocalStorage(res.converted))
   }
 }
 </script>
