@@ -1,10 +1,3 @@
-z<template>
-  <div>
-    judge page
-    ひらがな化：{{ hiraganaResult }}
-  </div>
-</template>
-
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
@@ -28,17 +21,17 @@ export default class JudgePage extends Vue {
     const repeatTimes = 3
 
     this.hiraganaWish = convertedWish.repeat(repeatTimes)
-    console.log('hiraganaWish', this.hiraganaWish)
+    // console.log('hiraganaWish', this.hiraganaWish)
   }
 
   getHiragana (localStorageResult: string) {
     this.$hiragana.apiSubmit(localStorageResult).then(res => this.setHiraganaResult(res.converted))
-    console.log('ひらがな化結果', this.hiraganaResult)
+    // console.log('ひらがな化結果', this.hiraganaResult)
   }
 
   setHiraganaResult (hiraganaSentence: string) {
     this.hiraganaResult = this.deleteWhiteSpace(hiraganaSentence)
-    console.log('セット完了')
+    // console.log('セット完了')
     this.judgeWish()
   }
 
@@ -47,7 +40,7 @@ export default class JudgePage extends Vue {
   }
 
   judgeWish () {
-    console.log('Judge発火')
+    // console.log('Judge発火')
     this.matchWish(this.hiraganaWish, this.hiraganaResult)
   }
 
@@ -60,15 +53,15 @@ export default class JudgePage extends Vue {
   matchWish (wishSentence: string, resultSentence: string) {
     const splitWishSentence = this.splitWish(wishSentence)
     const splitResultSentence = this.splitWish(resultSentence)
-    console.log('splitWishSentence', splitWishSentence)
-    console.log('splitResultSentence', splitResultSentence)
+    // console.log('splitWishSentence', splitWishSentence)
+    // console.log('splitResultSentence', splitResultSentence)
 
     const result1 = this.matchNumberOfCharacters(splitWishSentence.length, splitResultSentence.length)
     const result2 = this.compareCharacters(splitWishSentence, splitResultSentence)
     const result3 = this.compareOneCharacters(splitWishSentence, splitResultSentence)
-    console.log('文字数検証', result1)
-    console.log('文字一致検証', result2)
-    console.log('個別文字一致検証', result3)
+    // console.log('文字数検証', result1)
+    // console.log('文字一致検証', result2)
+    // console.log('個別文字一致検証', result3)
     this.calculateScore(result1, result2, result3)
   }
 
@@ -95,12 +88,12 @@ export default class JudgePage extends Vue {
     const score1 = result1 ? 30 : 0
     const score2 = result2 ? 30 : 0
     const score3 = this.calculateScoreOfCharacters(result3)
-    console.log('score1', score1)
-    console.log('score2', score2)
-    console.log('score3', score3)
+    // console.log('score1', score1)
+    // console.log('score2', score2)
+    // console.log('score3', score3)
 
     const score = score1 + score2 + score3
-    console.log('score', score)
+    // console.log('score', score)
 
     this.submitScore(score)
   }
@@ -109,14 +102,14 @@ export default class JudgePage extends Vue {
     const isTrue = (el: boolean) => el === true
     const trueNumber = result3.filter(isTrue).length
     const result = result3.length - trueNumber
-    console.log('true数の差分', result)
+    // console.log('true数の差分', result)
 
     return result
   }
 
   calculateScoreOfCharacters (result3: boolean[]) {
     const difference = this.countTrueCharacters(result3)
-    console.log('差分', difference)
+    // console.log('差分', difference)
     if (difference === 0) {
       return 40
     } else if (difference < 3) {
