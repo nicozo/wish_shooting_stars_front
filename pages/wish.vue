@@ -57,6 +57,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class WishPage extends Vue {
   wish = ''
+  apiKey = this.$config.apiKey
 
   async decide () {
     await this.wishSubmit()
@@ -95,8 +96,19 @@ export default class WishPage extends Vue {
     return sentence.replace(/\s+/g, '')
   }
 
-  getHiragana (sentence: string) {
-    this.$hiragana.apiSubmit(sentence).then(res => this.setHiraganaInLocalStorage(res.converted))
+  async getHiragana (sentence: string) {
+    const API_URL = 'https://labs.goo.ne.jp/api/hiragana'
+    const OUTPUT_TYPE = 'hiragana'
+    const data = {
+      app_id: this.apiKey,
+      sentence,
+      output_type: OUTPUT_TYPE
+    }
+    await this.$axios.$post(
+      API_URL,
+      data
+    )
+      .then(res => this.setHiraganaInLocalStorage(res.converted))
   }
 }
 </script>
