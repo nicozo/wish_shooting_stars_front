@@ -6,6 +6,7 @@ export default class JudgePage extends Vue {
   wishObject = {}
   hiraganaWish = ''
   hiraganaResult = ''
+  apiKey = this.$config.apiKey
 
   created () {
     this.setWishObject(JSON.parse(localStorage.wish))
@@ -24,9 +25,19 @@ export default class JudgePage extends Vue {
     // console.log('hiraganaWish', this.hiraganaWish)
   }
 
-  getHiragana (localStorageResult: string) {
-    this.$hiragana.apiSubmit(localStorageResult).then(res => this.setHiraganaResult(res.converted))
-    // console.log('ひらがな化結果', this.hiraganaResult)
+  async getHiragana (localStorageResult: string) {
+    const API_URL = 'https://labs.goo.ne.jp/api/hiragana'
+    const OUTPUT_TYPE = 'hiragana'
+    const data = {
+      app_id: this.apiKey,
+      sentence: localStorageResult,
+      output_type: OUTPUT_TYPE
+    }
+    await this.$axios.$post(
+      API_URL,
+      data
+    )
+      .then(res => this.setHiraganaResult(res.converted))
   }
 
   setHiraganaResult (hiraganaSentence: string) {
@@ -73,7 +84,8 @@ export default class JudgePage extends Vue {
     return wishSentence.toString() === resultSentence.toString()
   }
 
-  compareOneCharacters (wishSentence: object[], resultSentence: object[]) {
+  compareOneCharacters (wishSentence: { [k: number]: {segment: string} }, resultSentence: object[]) {
+    console.log('resultSentence', resultSentence)
     const result = resultSentence.map((value, index) => {
       const wishCharacter = wishSentence[index].segment
       const resultCharacter = value.segment
