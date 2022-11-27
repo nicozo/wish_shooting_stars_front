@@ -143,6 +143,12 @@ export default class JudgePage extends Vue {
         }
       }
     )
+      .then(res => this.updateWishInLocalStorage(res))
+  }
+
+  updateWishInLocalStorage (res: object) {
+    localStorage.setItem('wish', JSON.stringify(res))
+    this.$router.push('/result')
   }
 }
 </script>
