@@ -59,6 +59,16 @@ export default class WishPage extends Vue {
   wish = ''
   apiKey = this.$config.apiKey
 
+  created () {
+    this.deleteLocalStorage()
+  }
+
+  deleteLocalStorage () {
+    localStorage.removeItem('wish')
+    localStorage.removeItem('result')
+    localStorage.removeItem('convertedWish')
+  }
+
   async decide () {
     await this.wishSubmit()
   }
