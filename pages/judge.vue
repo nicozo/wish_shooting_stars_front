@@ -3,7 +3,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class JudgePage extends Vue {
-  wishObject = {}
+  wishObjectId = 0
   hiraganaWish = ''
   hiraganaResult = ''
   apiKey = this.$config.apiKey
@@ -14,8 +14,8 @@ export default class JudgePage extends Vue {
     this.getHiragana(JSON.parse(localStorage.result))
   }
 
-  setWishObject (localStorageWish: {}) {
-    this.wishObject = localStorageWish
+  setWishObject (localStorageWish: { id: number }) {
+    this.wishObjectId = localStorageWish.id
   }
 
   concatenateWish (convertedWish: string) {
@@ -56,16 +56,15 @@ export default class JudgePage extends Vue {
   }
 
   splitWish (sentence :string) {
-    const segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' })
+    // const segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' })
 
-    return [...segmenter.segment(sentence)]
+    // return [...segmenter.segment(sentence)]
+    return [...sentence]
   }
 
   matchWish (wishSentence: string, resultSentence: string) {
     const splitWishSentence = this.splitWish(wishSentence)
     const splitResultSentence = this.splitWish(resultSentence)
-    // console.log('splitWishSentence', splitWishSentence)
-    // console.log('splitResultSentence', splitResultSentence)
 
     const result1 = this.matchNumberOfCharacters(splitWishSentence.length, splitResultSentence.length)
     const result2 = this.compareCharacters(splitWishSentence, splitResultSentence)
@@ -80,15 +79,15 @@ export default class JudgePage extends Vue {
     return wishSentenceLength === resultSentenceLength
   }
 
-  compareCharacters (wishSentence: object[], resultSentence: object[]) {
+  compareCharacters (wishSentence: string[], resultSentence: string[]) {
     return wishSentence.toString() === resultSentence.toString()
   }
 
-  compareOneCharacters (wishSentence: { [k: number]: {segment: string} }, resultSentence: object[]) {
-    console.log('resultSentence', resultSentence)
+  compareOneCharacters (wishSentence: string[], resultSentence: string[]) {
+    // console.log('resultSentence', resultSentence)
     const result = resultSentence.map((value, index) => {
-      const wishCharacter = wishSentence[index].segment
-      const resultCharacter = value.segment
+      const wishCharacter = wishSentence[index]
+      const resultCharacter = value
 
       return wishCharacter === resultCharacter
     })
@@ -137,7 +136,7 @@ export default class JudgePage extends Vue {
 
   async submitScore (score: number) {
     await this.$axios.$patch(
-      `/api/v1/wishes/${this.wishObject.id}`,
+      `/api/v1/wishes/${this.wishObjectId}`,
       {
         wish: {
           score
