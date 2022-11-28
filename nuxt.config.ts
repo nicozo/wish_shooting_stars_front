@@ -48,7 +48,8 @@ const config: NuxtConfig = {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/google-fonts'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -95,6 +96,12 @@ const config: NuxtConfig = {
       eslint: {
         files: './**/*.{ts,js,vue}'
       }
+    }
+  },
+
+  googleFonts: {
+    families: {
+      'Kiwi+Maru': true
     }
   }
 }
