@@ -60,6 +60,9 @@ export default class DefaultLayout extends Vue {
 </script>
 
 <style>
+div{
+  font-family: 'Yomogi', cursive;
+}
 .starry_sky{
   position: absolute;
   top: 0;

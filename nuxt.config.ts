@@ -101,8 +101,10 @@ const config: NuxtConfig = {
 
   googleFonts: {
     families: {
-      'Kiwi+Maru': true
-    }
+      Yomogi: true
+    },
+    download: false,
+    inject: false
   }
 }
 
