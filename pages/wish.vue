@@ -8,6 +8,8 @@
       <v-card
         id="wish-form"
         flat
+        dark
+        style="background:rgba(0,0,0,0.3); border: 1px solid black;"
       >
         <v-card-title>
           願い事を一つ決めよう！
