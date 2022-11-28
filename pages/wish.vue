@@ -39,6 +39,7 @@
                 color="purple"
                 class="py-6 mt-3"
                 :disabled="invalid"
+                :loading="loading"
                 @click="decide"
               >
                 決定する
@@ -58,6 +59,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class WishPage extends Vue {
   wish = ''
   apiKey = this.$config.apiKey
+  loading = false
 
   created () {
     this.deleteLocalStorage()
@@ -74,6 +76,8 @@ export default class WishPage extends Vue {
   }
 
   async wishSubmit () {
+    this.isLoading()
+
     await this.$axios.$post(
       '/api/v1/wishes',
       {
@@ -119,6 +123,10 @@ export default class WishPage extends Vue {
       data
     )
       .then(res => this.setHiraganaInLocalStorage(res.converted))
+  }
+
+  isLoading () {
+    this.loading = true
   }
 }
 </script>
