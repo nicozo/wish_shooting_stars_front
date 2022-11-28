@@ -26,6 +26,18 @@
         </v-card-text>
       </v-card>
     </v-col>
+
+    <v-btn
+      dark
+      color="#1d9bf0"
+      class="mt-4"
+      @click="twitterShare"
+    >
+      <v-icon left>
+        mdi-twitter
+      </v-icon>
+      Twitterで共有
+    </v-btn>
   </v-row>
 </template>
 
@@ -42,6 +54,16 @@ export default class ResultPage extends Vue {
 
   setWishObject (localStorageWish: object) {
     this.wish = localStorageWish
+  }
+
+  twitterShare () {
+    const shareURL =
+      'https://twitter.com/intent/tweet?text=' +
+      '願い事をしたよ！' +
+      '%0Ahttp://localhost:8080/wish' +
+      '%20%23星に願いを'
+
+    location.href = shareURL
   }
 }
 </script>
