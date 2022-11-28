@@ -1,3 +1,24 @@
+<template>
+  <v-row
+    align="center"
+    justify="center"
+    dense
+  >
+    <v-col cols="12">
+      <v-card
+        id="wish-result"
+        flat
+        dark
+        style="background:rgba(0,0,0,0)"
+      >
+        <div class="text-center text-h3 font-weight-bold">
+          判定中...
+        </div>
+      </v-card>
+    </v-col>
+  </v-row>
+</template>
+
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
@@ -148,7 +169,7 @@ export default class JudgePage extends Vue {
 
   updateWishInLocalStorage (res: object) {
     localStorage.setItem('wish', JSON.stringify(res))
-    this.$router.push('/result')
+    // this.$router.push('/result')
   }
 }
 </script>
