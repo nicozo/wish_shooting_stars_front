@@ -8,12 +8,22 @@
       <v-card
         id="wish-result"
         flat
+        dark
+        style="background:rgba(0,0,0,0);"
       >
-        <v-card-title>
+        <v-card-title
+          class="justify-center mb-3"
+          style="font-size: 48px;"
+        >
           結果
         </v-card-title>
 
-        点数は・・・{{ wish.score }}点です！
+        <v-card-text
+          class="text-center"
+          style="font-size: 48px;"
+        >
+          点数は...{{ wish.score }}点です！
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>
