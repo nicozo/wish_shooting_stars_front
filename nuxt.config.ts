@@ -28,7 +28,8 @@ const config: NuxtConfig = {
 
   publicRuntimeConfig: {
     appName: process.env.APP_NAME,
-    apiKey: process.env.GOO_API_KEY
+    apiKey: process.env.GOO_API_KEY,
+    homeURL: process.env.APP_HOME_URL
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -48,7 +49,8 @@ const config: NuxtConfig = {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/google-fonts'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -96,6 +98,14 @@ const config: NuxtConfig = {
         files: './**/*.{ts,js,vue}'
       }
     }
+  },
+
+  googleFonts: {
+    families: {
+      Yomogi: true
+    },
+    download: false,
+    inject: false
   }
 }
 

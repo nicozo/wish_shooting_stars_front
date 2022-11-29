@@ -98,6 +98,7 @@ export default class RecordingPage extends Vue {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
 
     lastShootingStar.addEventListener('animationend', () => {
+      console.log('録音終了')
       this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
         console.log('音声結果', event)
         this.setResultInLocalStorage(event.results[0][0].transcript)
@@ -128,7 +129,7 @@ export default class RecordingPage extends Vue {
 
   startShootingStarAnimation () {
     setTimeout(() => {
-      const shootingStars = document.querySelectorAll('.shooting_star')!
+      const shootingStars = document.querySelectorAll('.shooting_star_dom')!
 
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
@@ -142,6 +143,7 @@ export default class RecordingPage extends Vue {
     const shootingStarEl = document.createElement('span')!
 
     shootingStarEl.className = 'shooting_star'
+    shootingStarEl.classList.add('shooting_star_dom')
     starrySky.appendChild(shootingStarEl)
   }
 
@@ -153,8 +155,17 @@ export default class RecordingPage extends Vue {
 
   setLastShootingStar () {
     const shootingStarEl = document.querySelector('.shooting_star')!
+    // console.log('変更前', shootingStarEl)
+    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
+    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
+    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
 
     shootingStarEl.classList.add('last_shooting_star')
+    shootingStarEl.classList.remove('shooting_star')
+    // console.log('変更後', shootingStarEl)
+    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
+    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
+    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
   }
 
   changeListening () {
@@ -257,7 +268,7 @@ export default class RecordingPage extends Vue {
 
 .last_shooting_star{
   top: 0;
-  right: 600px;
+  right: 150px;
   left: initial;
   animation-delay: 1s;
   animation-duration: 3s;

@@ -8,6 +8,8 @@
       <v-card
         id="wish-form"
         flat
+        dark
+        style="background:rgba(0,0,0,0.3); border: 1px solid black;"
       >
         <v-card-title>
           願い事を一つ決めよう！
@@ -39,6 +41,7 @@
                 color="purple"
                 class="py-6 mt-3"
                 :disabled="invalid"
+                :loading="loading"
                 @click="decide"
               >
                 決定する
@@ -58,12 +61,25 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class WishPage extends Vue {
   wish = ''
   apiKey = this.$config.apiKey
+  loading = false
+
+  created () {
+    this.deleteLocalStorage()
+  }
+
+  deleteLocalStorage () {
+    localStorage.removeItem('wish')
+    localStorage.removeItem('result')
+    localStorage.removeItem('convertedWish')
+  }
 
   async decide () {
     await this.wishSubmit()
   }
 
   async wishSubmit () {
+    this.isLoading()
+
     await this.$axios.$post(
       '/api/v1/wishes',
       {
@@ -79,7 +95,7 @@ export default class WishPage extends Vue {
   submitSuccessful (res: { title: string }) {
     this.setWishInLocalStorage(res)
     this.getHiragana(res.title)
-    this.$router.push('/recording')
+    // this.$router.push('/recording')
   }
 
   setWishInLocalStorage (res: object) {
@@ -90,6 +106,8 @@ export default class WishPage extends Vue {
     const str = this.deleteWhiteSpace(sentence)
 
     localStorage.setItem('convertedWish', JSON.stringify(str))
+    // TODO 遷移後に流れ星アニメーションが正常に動作しないため一旦下記の方法で画面遷移
+    window.location.href = '/recording'
   }
 
   deleteWhiteSpace (sentence: string) {
@@ -109,6 +127,10 @@ export default class WishPage extends Vue {
       data
     )
       .then(res => this.setHiraganaInLocalStorage(res.converted))
+  }
+
+  isLoading () {
+    this.loading = true
   }
 }
 </script>
