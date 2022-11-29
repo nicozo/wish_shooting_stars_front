@@ -15,8 +15,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Component, Vue } from 'nuxt-property-decorator'
 import AppFooter from '~/components/App/AppFooter.vue'
 import HomeHeader from '~/components/Home/HomeHeader.vue'
 

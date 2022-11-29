@@ -96,8 +96,6 @@ export default class WishPage extends Vue {
     this.setWishInLocalStorage(res)
     this.getHiragana(res.title)
     // this.$router.push('/recording')
-    // TODO 遷移後に流れ星アニメーションが正常に動作しないため一旦下記の方法で画面遷移
-    window.location.href = "/recording"
   }
 
   setWishInLocalStorage (res: object) {
@@ -108,6 +106,8 @@ export default class WishPage extends Vue {
     const str = this.deleteWhiteSpace(sentence)
 
     localStorage.setItem('convertedWish', JSON.stringify(str))
+    // TODO 遷移後に流れ星アニメーションが正常に動作しないため一旦下記の方法で画面遷移
+    window.location.href = '/recording'
   }
 
   deleteWhiteSpace (sentence: string) {
