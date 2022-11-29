@@ -28,7 +28,8 @@ const config: NuxtConfig = {
 
   publicRuntimeConfig: {
     appName: process.env.APP_NAME,
-    apiKey: process.env.GOO_API_KEY
+    apiKey: process.env.GOO_API_KEY,
+    homeURL: process.env.APP_HOME_URL
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

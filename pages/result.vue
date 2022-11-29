@@ -91,7 +91,8 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class ResultPage extends Vue {
-  wish: {}
+  wish = {}
+  homeURL = this.$config.homeURL
 
   created () {
     this.setWishObject(JSON.parse(localStorage.wish))
@@ -105,7 +106,7 @@ export default class ResultPage extends Vue {
     const shareURL =
       'https://twitter.com/intent/tweet?text=' +
       '願い事をしたよ！' +
-      '%0Ahttp://localhost:8080/wish' +
+      `%0A${this.homeURL}` +
       '%20%23星に願いを'
 
     location.href = shareURL
