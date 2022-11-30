@@ -13,39 +13,50 @@
       </div>
     </v-col>
 
-    <v-col
-      v-for="(wish, i) in displayWishes"
-      :key="i"
-      cols="12"
-      align="center"
-    >
-      <v-card
-        :id="`wish-${wish.id}`"
-        rounded-xl
-        flat
-        dark
-        style="background:rgba(0,0,0,0.3);"
-        max-width="800"
+    <template v-if="loading">
+      <v-progress-circular
+        indeterminate
+        color="purple"
+      />
+
+      <p style="color: white;">取得中...</p>
+    </template>
+
+    <template v-else>
+      <v-col
+        v-for="(wish, i) in displayWishes"
+        :key="i"
+        cols="12"
+        align="center"
       >
-        <v-container>
-          <!-- <v-card-title>
-            {{ wish.title + "!" }}
-          </v-card-title> -->
+        <v-card
+          :id="`wish-${wish.id}`"
+          rounded-xl
+          flat
+          dark
+          style="background:rgba(0,0,0,0.3);"
+          max-width="800"
+        >
+          <v-container>
+            <!-- <v-card-title>
+              {{ wish.title + "!" }}
+            </v-card-title> -->
 
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>
-                {{ wish.title + "!" }}
-              </v-list-item-title>
-            </v-list-item-content>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ wish.title + "!" }}
+                </v-list-item-title>
+              </v-list-item-content>
 
-            <div>
-              {{ wish.score + '点' }}
-            </div>
-          </v-list-item>
-        </v-container>
-      </v-card>
-    </v-col>
+              <div>
+                {{ wish.score + '点' }}
+              </div>
+            </v-list-item>
+          </v-container>
+        </v-card>
+      </v-col>
+    </template>
 
     <v-col cols="12">
       <v-pagination
@@ -69,6 +80,7 @@ export default class WishListPage extends Vue {
   pageSize = 7
   pageNumber = 0
   wishes = []
+  loading = false
 
   get pageLength () {
     return Math.ceil(this.wishes.length / this.pageSize)
@@ -83,6 +95,8 @@ export default class WishListPage extends Vue {
   }
 
   async getSuccessWishes () {
+    this.toggleLoading()
+
     await this.$axios.$get(
       '/api/v1/wishes'
     )
@@ -92,10 +106,15 @@ export default class WishListPage extends Vue {
 
   setWishes (res: []) {
     this.wishes = res
+    this.toggleLoading()
   }
 
   setPageNumber (number: number) {
     this.pageNumber = number
+  }
+
+  toggleLoading () {
+    this.loading = !this.loading
   }
 }
 </script>

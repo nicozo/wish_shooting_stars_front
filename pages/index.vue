@@ -25,6 +25,14 @@
         >
           お願い事をする
         </v-btn>
+
+        <v-btn
+          color="purple"
+          nuxt
+          :to="{ name: 'wishList' }"
+        >
+          みんなのWishを見る
+        </v-btn>
       </v-card>
     </v-col>
   </v-row>
