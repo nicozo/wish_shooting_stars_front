@@ -13,6 +13,19 @@
       </div>
     </v-col>
 
+    <v-col
+      cols="12"
+      align="center"
+    >
+      <v-btn
+        class="mb-3"
+        nuxt
+        :to="{ name: 'index' }"
+      >
+        ホームへ戻る
+      </v-btn>
+    </v-col>
+
     <template v-if="loading">
       <v-progress-circular
         indeterminate
@@ -37,23 +50,21 @@
           style="background:rgba(0,0,0,0.3);"
           max-width="800"
         >
-          <v-container>
-            <!-- <v-card-title>
-              {{ wish.title + "!" }}
-            </v-card-title> -->
+          <!-- <v-card-title>
+            {{ wish.title + "!" }}
+          </v-card-title> -->
 
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ wish.title + "!" }}
-                </v-list-item-title>
-              </v-list-item-content>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ wish.title + "!" }}
+              </v-list-item-title>
+            </v-list-item-content>
 
-              <div>
-                {{ wish.score + '点' }}
-              </div>
-            </v-list-item>
-          </v-container>
+            <div>
+              {{ wish.score + '点' }}
+            </div>
+          </v-list-item>
         </v-card>
       </v-col>
     </template>
@@ -77,7 +88,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class WishListPage extends Vue {
   page = 1
-  pageSize = 7
+  pageSize = 8
   pageNumber = 0
   wishes = []
   loading = false
