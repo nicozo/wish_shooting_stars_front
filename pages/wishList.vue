@@ -32,7 +32,9 @@
         color="purple"
       />
 
-      <p style="color: white;">取得中...</p>
+      <p style="color: white;">
+        取得中...
+      </p>
     </template>
 
     <template v-else>
@@ -73,10 +75,10 @@
       <v-pagination
         v-model="page"
         :length="pageLength"
-        @input="setPageNumber"
         color="purple"
         circle
         class="mt-3"
+        @input="setPageNumber"
       />
     </v-col>
   </v-row>
