@@ -11,7 +11,7 @@
       >
         <div v-show="isListening()">
           <v-card-title class="justify-center mb-5">
-            流れ星観察中！
+            流れ星観測中！
           </v-card-title>
         </div>
 
@@ -80,7 +80,6 @@ export default class RecordingPage extends Vue {
   }
 
   initializeWebSpeechApi () {
-    // this.$recognition.initializeApi()
     const { webkitSpeechRecognition } = window as any
     const SpeechRecognition = webkitSpeechRecognition
     this.recognition = new SpeechRecognition()
@@ -155,17 +154,9 @@ export default class RecordingPage extends Vue {
 
   setLastShootingStar () {
     const shootingStarEl = document.querySelector('.shooting_star')!
-    // console.log('変更前', shootingStarEl)
-    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
-    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
-    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
 
     shootingStarEl.classList.add('last_shooting_star')
     shootingStarEl.classList.remove('shooting_star')
-    // console.log('変更後', shootingStarEl)
-    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
-    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
-    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
   }
 
   changeListening () {
@@ -184,36 +175,26 @@ export default class RecordingPage extends Vue {
 
 <style>
 .btnripple{
-  /*波紋の基点とするためrelativeを指定*/
   position: relative;
-  /*アニメーションの設定*/
   transition: all .3s;
 }
 
-/*波形を2つ設定*/
 .btnripple::after {
   content: '';
-  /*絶対配置で波形の位置を決める*/
   position: absolute;
   left: -25%;
   top: -25%;
-  /*波形の形状*/
   border: 1px solid #9c27b0;
   width: 150%;
   height: 150%;
   border-radius: 50%;
-  /*はじめは不透明*/
-  /* opacity: 1; */
-  /*ループするアニメーションの設定*/
   animation:1s circleanime linear infinite;
 }
 
-/*波形の2つ目は0.5秒遅らせてアニメーション*/
 .btnripple::before {
   animation-delay:.5s;
 }
 
-/*波形のアニメーション*/
 @keyframes circleanime{
   0%{
     transform: scale(0.68);
