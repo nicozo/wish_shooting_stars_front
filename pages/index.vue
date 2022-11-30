@@ -9,17 +9,20 @@
       class="text-center"
     >
       <v-card
-        dark
         flat
         color="transparent"
       >
-        <div class="text-h3 mb-3">
+        <div
+          class="mb-3"
+          style="font-size: 48px; color: white;"
+        >
           星に願いを
         </div>
 
         <v-btn
           dark
           color="purple"
+          width="200"
           nuxt
           :to="{ name: 'wish' }"
         >
@@ -27,7 +30,7 @@
         </v-btn>
 
         <v-btn
-          color="purple"
+          width="200"
           nuxt
           :to="{ name: 'wishList' }"
         >
