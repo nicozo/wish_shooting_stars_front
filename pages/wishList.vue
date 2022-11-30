@@ -4,6 +4,15 @@
     justify="center"
     dense
   >
+    <v-col cols="12">
+      <div
+        style="font-size: 48px; color: white;"
+        class="text-center"
+      >
+        みんなのWISH
+      </div>
+    </v-col>
+
     <v-col
       v-for="(wish, i) in displayWishes"
       :key="i"
@@ -18,9 +27,23 @@
         style="background:rgba(0,0,0,0.3);"
         max-width="800"
       >
-        <v-card-title>
-          {{ wish.title + "!" }}
-        </v-card-title>
+        <v-container>
+          <!-- <v-card-title>
+            {{ wish.title + "!" }}
+          </v-card-title> -->
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ wish.title + "!" }}
+              </v-list-item-title>
+            </v-list-item-content>
+
+            <div>
+              {{ wish.score + '点' }}
+            </div>
+          </v-list-item>
+        </v-container>
       </v-card>
     </v-col>
 
