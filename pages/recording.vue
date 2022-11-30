@@ -82,6 +82,7 @@ export default class RecordingPage extends Vue {
   initializeWebSpeechApi () {
     const { webkitSpeechRecognition } = window as any
     const SpeechRecognition = webkitSpeechRecognition
+
     this.recognition = new SpeechRecognition()
     this.recognition.lang = 'ja-JP'
     this.recognition.interimResults = false
@@ -132,6 +133,7 @@ export default class RecordingPage extends Vue {
 
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
+
         dom.classList.add('shooting_star_animation')
       }
     }, this.timeout)
