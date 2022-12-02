@@ -42,6 +42,7 @@
                   <div v-show="isListening()">
                     <v-icon>mdi-account-voice</v-icon>
                   </div>
+
                   <div v-show="!isListening()">
                     <v-icon>mdi-hands-pray</v-icon>
                   </div>

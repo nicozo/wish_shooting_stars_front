@@ -52,10 +52,6 @@
           style="background:rgba(0,0,0,0.3);"
           max-width="800"
         >
-          <!-- <v-card-title>
-            {{ wish.title + "!" }}
-          </v-card-title> -->
-
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
@@ -63,8 +59,20 @@
               </v-list-item-title>
             </v-list-item-content>
 
-            <div>
+            <div class="mr-3">
               {{ wish.score + '点' }}
+            </div>
+
+            <v-icon
+              class="mr-3"
+              color="yellow"
+              @click="like(wish.id)"
+            >
+              mdi-star
+            </v-icon>
+
+            <div>
+              {{ wish.likes_count }}いいね
             </div>
           </v-list-item>
         </v-card>
@@ -128,6 +136,19 @@ export default class WishListPage extends Vue {
 
   toggleLoading () {
     this.loading = !this.loading
+  }
+
+  async like (wishId: number) {
+    await this.$axios.$post(
+      '/api/v1/likes',
+      {
+        like: {
+          wish_id: wishId
+        }
+      }
+    )
+      .then(res => console.log(res))
+      .catch(e => console.log(e))
   }
 }
 </script>
