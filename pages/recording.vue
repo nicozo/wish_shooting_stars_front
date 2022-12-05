@@ -96,14 +96,15 @@ export default class RecordingPage extends Vue {
   }
 
   endRecording () {
+    this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
+      console.log('音声結果', event)
+      this.setResultInLocalStorage(event.results[0][0].transcript)
+    }
+
     const lastShootingStar = document.querySelector('.last_shooting_star')!
 
     lastShootingStar.addEventListener('animationend', () => {
       console.log('録音終了')
-      this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
-        console.log('音声結果', event)
-        this.setResultInLocalStorage(event.results[0][0].transcript)
-      }
       this.recognition.stop()
     })
   }
