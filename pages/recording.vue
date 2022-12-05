@@ -216,7 +216,8 @@ export default class RecordingPage extends Vue {
   height: 4px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1)  ;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+  opacity: 0;
 }
 
 .shooting_star_animation {
@@ -237,15 +238,15 @@ export default class RecordingPage extends Vue {
   0%
   {
     transform: rotate(315deg) translateX(0);
-    opacity: 1;
+    opacity: 0;
   }
-  70%
+  10%
   {
     opacity: 1;
   }
   100%
   {
-    transform: rotate(315deg) translateX(-1500px);
+    transform: rotate(315deg) translateX(-1000px);
     opacity: 0;
   }
 }
@@ -291,9 +292,8 @@ export default class RecordingPage extends Vue {
 }
 
 .shooting_star:nth-child(5){
-  top: 0;
-  right: 80px;
-  left: initial;
+  bottom: 40px;
+  left: 700px;
   animation-delay: 0.2s;
   animation-duration: 3s;
 }
