@@ -54,6 +54,10 @@
               クリックで録音！
             </span>
           </v-tooltip>
+
+          <v-card-text class="text-center">
+            {{ displayResult }}
+          </v-card-text>
         </v-row>
       </v-card>
     </v-col>
@@ -70,6 +74,7 @@ export default class RecordingPage extends Vue {
   numberOfShootingStars = 7
   timeout = 2000
   recognition: any = null
+  result = ''
 
   created () {
     this.initializeWebSpeechApi()
@@ -80,13 +85,17 @@ export default class RecordingPage extends Vue {
     this.setLastShootingStar()
   }
 
+  get displayResult () {
+    return this.result
+  }
+
   initializeWebSpeechApi () {
     const { webkitSpeechRecognition } = window as any
     const SpeechRecognition = webkitSpeechRecognition
 
     this.recognition = new SpeechRecognition()
     this.recognition.lang = 'ja-JP'
-    this.recognition.interimResults = false
+    this.recognition.interimResults = true
     this.recognition.continuous = false
   }
 
@@ -96,16 +105,17 @@ export default class RecordingPage extends Vue {
   }
 
   endRecording () {
+    const lastShootingStar = document.querySelector('.last_shooting_star')!
+
     this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
       console.log('音声結果', event)
-      this.setResultInLocalStorage(event.results[0][0].transcript)
+      this.result = event.results[0][0].transcript
     }
-
-    const lastShootingStar = document.querySelector('.last_shooting_star')!
 
     lastShootingStar.addEventListener('animationend', () => {
       console.log('録音終了')
       this.recognition.stop()
+      this.setResultInLocalStorage(this.result)
     })
   }
 

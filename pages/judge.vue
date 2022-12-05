@@ -144,7 +144,7 @@ export default class JudgePage extends Vue {
       `/api/v1/wishes/${this.wishObjectId}`,
       {
         wish: {
-          totalScore
+          score: totalScore
         }
       }
     )
