@@ -58,6 +58,15 @@ export default class JudgePage extends Vue {
       data
     )
       .then(res => this.setHiraganaResult(res.converted))
+      .catch(e => this.finishJudge(e))
+  }
+
+  finishJudge (e: {}) {
+    if (typeof e !== 'undefined') {
+      const score = 0
+
+      this.submitScore(score)
+    }
   }
 
   setHiraganaResult (hiraganaSentence: string) {
