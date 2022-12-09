@@ -67,8 +67,8 @@
               id="likeButton"
               class="mr-3"
               color="yellow"
-              @click="like(wish.id)"
               :disabled="alreadyLiked(wish.id)"
+              @click="like(wish.id)"
             >
               mdi-star
             </v-icon>
