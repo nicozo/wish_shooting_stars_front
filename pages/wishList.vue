@@ -105,7 +105,7 @@ export default class WishListPage extends Vue {
   pageNumber = 0
   wishes = []
   loading = false
-  wishIds = []
+  wishIds: number[] = []
 
   get pageLength () {
     return Math.ceil(this.wishes.length / this.pageSize)
