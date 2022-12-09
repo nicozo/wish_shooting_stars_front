@@ -52,6 +52,8 @@
           style="background:rgba(0,0,0,0.3);"
           max-width="800"
         >
+              ids: {{ wishIds }}
+          id: {{ wish.id }}
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
@@ -64,9 +66,11 @@
             </div>
 
             <v-icon
+              id="likeButton"
               class="mr-3"
               color="yellow"
               @click="like(wish.id)"
+              :disabled="alreadyLiked(wish.id)"
             >
               mdi-star
             </v-icon>
@@ -94,6 +98,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import $cookies from 'cookie-universal-nuxt'
 
 @Component
 export default class WishListPage extends Vue {
@@ -102,6 +107,7 @@ export default class WishListPage extends Vue {
   pageNumber = 0
   wishes = []
   loading = false
+  wishIds = []
 
   get pageLength () {
     return Math.ceil(this.wishes.length / this.pageSize)
@@ -111,8 +117,22 @@ export default class WishListPage extends Vue {
     return this.pageNumber !== 0 ? this.wishes.slice(this.pageSize * (this.pageNumber - 1), this.pageSize * this.pageNumber) : this.wishes.slice(0, this.pageSize)
   }
 
+  get alreadyLiked () {
+    return (wishId: number) => {
+      const result = this.wishIds.includes(wishId)
+
+      return result
+    }
+  }
+
   created () {
     this.getSuccessWishes()
+    this.getCookie()
+  }
+
+  getCookie () {
+    const arr = this.$cookies.get('like_wish_id').split(',')
+    this.wishIds = arr.map(Number)
   }
 
   async getSuccessWishes () {
@@ -147,8 +167,14 @@ export default class WishListPage extends Vue {
         }
       }
     )
-      .then(res => console.log(res))
+      .then(res => this.animateLikeButton())
       .catch(e => console.log(e))
+  }
+
+  animateLikeButton () {
+    const button = document.getElementById('likeButton')
+    console.log(button)
+    this.getCookie()
   }
 }
 </script>
