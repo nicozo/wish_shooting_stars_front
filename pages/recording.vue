@@ -19,6 +19,10 @@
           <v-card-title class="justify-center mb-5">
             流れ星にWISHを３回唱えよう！
           </v-card-title>
+
+          <v-card-title class="justify-center mb-5">
+            あなたのWISHは「{{ wish.title }}」です
+          </v-card-title>
         </div>
 
         <v-row justify="center">
@@ -75,9 +79,11 @@ export default class RecordingPage extends Vue {
   timeout = 2000
   recognition: any = null
   result = ''
+  wish = {}
 
   created () {
     this.initializeWebSpeechApi()
+    this.setWishObject(JSON.parse(localStorage.wish))
   }
 
   mounted () {
@@ -97,6 +103,10 @@ export default class RecordingPage extends Vue {
     this.recognition.lang = 'ja-JP'
     this.recognition.interimResults = true
     this.recognition.continuous = false
+  }
+
+  setWishObject (localStorageWish: {}) {
+    this.wish = localStorageWish
   }
 
   startRecording () {
@@ -271,7 +281,7 @@ export default class RecordingPage extends Vue {
 }
 
 .shooting_star:nth-child(1){
-  top: 0;
+  top: 280;
   right: 0;
   left: initial;
   animation-delay: 0;
