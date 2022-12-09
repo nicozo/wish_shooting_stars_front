@@ -52,8 +52,6 @@
           style="background:rgba(0,0,0,0.3);"
           max-width="800"
         >
-              ids: {{ wishIds }}
-          id: {{ wish.id }}
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>
@@ -167,14 +165,6 @@ export default class WishListPage extends Vue {
         }
       }
     )
-      .then(res => this.animateLikeButton())
-      .catch(e => console.log(e))
-  }
-
-  animateLikeButton () {
-    const button = document.getElementById('likeButton')
-    console.log(button)
-    this.getCookie()
   }
 }
 </script>
