@@ -27,7 +27,7 @@
                   v-model="wish"
                   label="願い事"
                   placeholder="恋人ができますように"
-                  counter="15"
+                  counter="30"
                   :error-messages="errors"
                   :hint="wishHint"
                   persistent-hint
