@@ -30,7 +30,7 @@
             class="text-center"
             style="font-size: 16px;"
           >
-            おめでとう！流れ星はあなたの願い事を聞き取れたよ！
+            おめでとう！流れ星はあなたの願いが聞こえたみたい！
           </v-card-text>
         </div>
 
@@ -39,7 +39,7 @@
             class="text-center"
             style="font-size: 16px;"
           >
-            惜しい！ほとんど正確に願い事を唱えれたよ！
+            惜しい！流れ星はあなたの願いが少しだけ聞き取りずらかったみたい！
           </v-card-text>
         </div>
 
@@ -48,7 +48,7 @@
             class="text-center"
             style="font-size: 16px;"
           >
-            頑張ろう！再チャレンジ待ってるよ！
+            頑張ろう！流れ星は聞き取れなかったみたい！再チャレンジしよう！
           </v-card-text>
         </div>
       </v-card>
@@ -79,6 +79,8 @@
         dark
         color="purple"
         width="250"
+        nuxt
+        :to="{ name: 'wishList' }"
       >
         願い事一覧へ
       </v-btn>

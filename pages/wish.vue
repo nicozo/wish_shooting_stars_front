@@ -9,7 +9,7 @@
         id="wish-form"
         flat
         dark
-        style="background:rgba(0,0,0,0.3); border: 1px solid black;"
+        style="background:rgba(0,0,0,0.3);"
       >
         <v-card-title>
           願い事を一つ決めよう！
@@ -27,9 +27,9 @@
                   v-model="wish"
                   label="願い事"
                   placeholder="恋人ができますように"
-                  counter="15"
+                  counter="30"
                   :error-messages="errors"
-                  hint="語尾が「ように」「欲しい」「ください」のいずれかになるように入力してください"
+                  :hint="wishHint"
                   persistent-hint
                   required
                   color="purple"
@@ -62,6 +62,7 @@ export default class WishPage extends Vue {
   wish = ''
   apiKey = this.$config.apiKey
   loading = false
+  wishHint = '語尾が「ように」「欲しい」「ください」のいずれかになるように入力してください'
 
   created () {
     this.deleteLocalStorage()
@@ -95,6 +96,7 @@ export default class WishPage extends Vue {
   submitSuccessful (res: { title: string }) {
     this.setWishInLocalStorage(res)
     this.getHiragana(res.title)
+    // TODO 遷移後に流れ星アニメーションが正常に動作しないためコメントアウト
     // this.$router.push('/recording')
   }
 

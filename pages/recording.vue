@@ -11,13 +11,17 @@
       >
         <div v-show="isListening()">
           <v-card-title class="justify-center mb-5">
-            流れ星観察中！
+            流れ星観測中！
           </v-card-title>
         </div>
 
         <div v-show="!isListening()">
           <v-card-title class="justify-center mb-5">
             流れ星にWISHを３回唱えよう！
+          </v-card-title>
+
+          <v-card-title class="justify-center mb-5">
+            あなたのWISHは「{{ wish.title }}」です
           </v-card-title>
         </div>
 
@@ -42,6 +46,7 @@
                   <div v-show="isListening()">
                     <v-icon>mdi-account-voice</v-icon>
                   </div>
+
                   <div v-show="!isListening()">
                     <v-icon>mdi-hands-pray</v-icon>
                   </div>
@@ -53,6 +58,10 @@
               クリックで録音！
             </span>
           </v-tooltip>
+
+          <v-card-text class="text-center">
+            {{ displayResult }}
+          </v-card-text>
         </v-row>
       </v-card>
     </v-col>
@@ -69,9 +78,12 @@ export default class RecordingPage extends Vue {
   numberOfShootingStars = 7
   timeout = 2000
   recognition: any = null
+  result = ''
+  wish = {}
 
   created () {
     this.initializeWebSpeechApi()
+    this.setWishObject(JSON.parse(localStorage.wish))
   }
 
   mounted () {
@@ -79,14 +91,22 @@ export default class RecordingPage extends Vue {
     this.setLastShootingStar()
   }
 
+  get displayResult () {
+    return this.result
+  }
+
   initializeWebSpeechApi () {
-    // this.$recognition.initializeApi()
     const { webkitSpeechRecognition } = window as any
     const SpeechRecognition = webkitSpeechRecognition
+
     this.recognition = new SpeechRecognition()
     this.recognition.lang = 'ja-JP'
-    this.recognition.interimResults = false
+    this.recognition.interimResults = true
     this.recognition.continuous = false
+  }
+
+  setWishObject (localStorageWish: {}) {
+    this.wish = localStorageWish
   }
 
   startRecording () {
@@ -97,13 +117,15 @@ export default class RecordingPage extends Vue {
   endRecording () {
     const lastShootingStar = document.querySelector('.last_shooting_star')!
 
+    this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
+      console.log('音声結果', event)
+      this.result = event.results[0][0].transcript
+    }
+
     lastShootingStar.addEventListener('animationend', () => {
       console.log('録音終了')
-      this.recognition.onresult = (event: { results: { [k: number]: {transcript: string}[] } }) => {
-        console.log('音声結果', event)
-        this.setResultInLocalStorage(event.results[0][0].transcript)
-      }
       this.recognition.stop()
+      this.setResultInLocalStorage(this.result)
     })
   }
 
@@ -133,6 +155,7 @@ export default class RecordingPage extends Vue {
 
       for (let i = 0; i < shootingStars.length; i++) {
         const dom = shootingStars[i]
+
         dom.classList.add('shooting_star_animation')
       }
     }, this.timeout)
@@ -155,17 +178,9 @@ export default class RecordingPage extends Vue {
 
   setLastShootingStar () {
     const shootingStarEl = document.querySelector('.shooting_star')!
-    // console.log('変更前', shootingStarEl)
-    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
-    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
-    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
 
     shootingStarEl.classList.add('last_shooting_star')
     shootingStarEl.classList.remove('shooting_star')
-    // console.log('変更後', shootingStarEl)
-    // console.log('top', window.getComputedStyle(shootingStarEl).getPropertyValue('top'))
-    // console.log('right', window.getComputedStyle(shootingStarEl).getPropertyValue('right'))
-    // console.log('animation-duration', window.getComputedStyle(shootingStarEl).getPropertyValue('animation-duration'))
   }
 
   changeListening () {
@@ -184,36 +199,26 @@ export default class RecordingPage extends Vue {
 
 <style>
 .btnripple{
-  /*波紋の基点とするためrelativeを指定*/
   position: relative;
-  /*アニメーションの設定*/
   transition: all .3s;
 }
 
-/*波形を2つ設定*/
 .btnripple::after {
   content: '';
-  /*絶対配置で波形の位置を決める*/
   position: absolute;
   left: -25%;
   top: -25%;
-  /*波形の形状*/
   border: 1px solid #9c27b0;
   width: 150%;
   height: 150%;
   border-radius: 50%;
-  /*はじめは不透明*/
-  /* opacity: 1; */
-  /*ループするアニメーションの設定*/
   animation:1s circleanime linear infinite;
 }
 
-/*波形の2つ目は0.5秒遅らせてアニメーション*/
 .btnripple::before {
   animation-delay:.5s;
 }
 
-/*波形のアニメーション*/
 @keyframes circleanime{
   0%{
     transform: scale(0.68);
@@ -232,7 +237,8 @@ export default class RecordingPage extends Vue {
   height: 4px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1)  ;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+  opacity: 0;
 }
 
 .shooting_star_animation {
@@ -253,15 +259,15 @@ export default class RecordingPage extends Vue {
   0%
   {
     transform: rotate(315deg) translateX(0);
-    opacity: 1;
+    opacity: 0;
   }
-  70%
+  10%
   {
     opacity: 1;
   }
   100%
   {
-    transform: rotate(315deg) translateX(-1500px);
+    transform: rotate(315deg) translateX(-1000px);
     opacity: 0;
   }
 }
@@ -275,7 +281,7 @@ export default class RecordingPage extends Vue {
 }
 
 .shooting_star:nth-child(1){
-  top: 0;
+  top: 280;
   right: 0;
   left: initial;
   animation-delay: 0;
@@ -307,9 +313,8 @@ export default class RecordingPage extends Vue {
 }
 
 .shooting_star:nth-child(5){
-  top: 0;
-  right: 80px;
-  left: initial;
+  bottom: 40px;
+  left: 700px;
   animation-delay: 0.2s;
   animation-duration: 3s;
 }

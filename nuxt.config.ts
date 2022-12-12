@@ -56,7 +56,8 @@ const config: NuxtConfig = {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'cookie-universal-nuxt'
     // '@nuxtjs/i18n'
   ],
 
@@ -80,7 +81,8 @@ const config: NuxtConfig = {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://wish-shooting-stars-api.herokuapp.com/' : process.env.API_URL
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://wish-shooting-stars-api.herokuapp.com/' : process.env.API_URL,
+    credentials: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
