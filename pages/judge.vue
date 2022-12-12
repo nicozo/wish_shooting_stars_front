@@ -30,13 +30,13 @@ export default class JudgePage extends Vue {
   apiKey = this.$config.apiKey
 
   created () {
-    this.setWishId(JSON.parse(localStorage.wish.id))
+    this.setWishId(JSON.parse(localStorage.wish))
     this.concatenateWish(JSON.parse(localStorage.convertedWish))
     this.getHiragana(JSON.parse(localStorage.result))
   }
 
-  setWishId (localStorageWishId: number) {
-    this.wishObjectId = localStorageWishId
+  setWishId (localStorageWish: { id: number }) {
+    this.wishObjectId = localStorageWish.id
   }
 
   concatenateWish (convertedWish: string) {
