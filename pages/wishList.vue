@@ -96,7 +96,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import $cookies from 'cookie-universal-nuxt'
 
 @Component
 export default class WishListPage extends Vue {
@@ -130,6 +129,7 @@ export default class WishListPage extends Vue {
 
   getCookie () {
     const arr = this.$cookies.get('like_wish_id').split(',')
+
     this.wishIds = arr.map(Number)
   }
 
